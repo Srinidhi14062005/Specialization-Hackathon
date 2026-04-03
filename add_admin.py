@@ -1,4 +1,4 @@
-# for creating an admin using python console
+# creating an admin using python console
 from app import db
 from models import Faculty
 
