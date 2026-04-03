@@ -1,0 +1,13 @@
+C:\Users\dhana\AppData\Local\Programs\Python\Python312\Lib\site-packages\face_recognition_models\__init__.py:7: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_filename
+Traceback (most recent call last):
+  File "C:\Users\dhana\OneDrive\Desktop\SHACK1\facial-recognition-attendance-webapp\app.py", line 28, in <module>
+    db.create_all()
+  File "C:\Users\dhana\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask_sqlalchemy\extension.py", line 900, in create_all
+    self._call_for_binds(bind_key, "create_all")
+  File "C:\Users\dhana\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask_sqlalchemy\extension.py", line 871, in _call_for_binds
+    engine = self.engines[key]
+             ^^^^^^^^^^^^
+  File "C:\Users\dhana\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask_sqlalchemy\extension.py", line 690, in engines
+    raise RuntimeError(
+RuntimeError: The current Flask app is not registered with this 'SQLAlchemy' instance. Did you forget to call 'init_app', or did you create multiple 'SQLAlchemy' instances?

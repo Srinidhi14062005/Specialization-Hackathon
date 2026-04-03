@@ -36,5 +36,3 @@ class Attendance(db.Model):
     marked_by = db.Column(db.String(80))
     marked_date = db.Column(db.Date)
     marked_time = db.Column(db.Time)
-
-db.create_all()

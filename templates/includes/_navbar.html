@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg navbar-dark">
       <a class="navbar-brand" href="#">FR-Attendance</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -28,9 +28,9 @@
             </li>
             {% if session.is_admin %}
             <li class="nav-item active">
-              <a class="nav-link" href="/faculty_registration">Register Faculty</a>
-            </li>
-            {% endif %}
+               <a class="nav-link" href="/faculty_registration">Register Faculty</a>
+             </li>
+             {% endif %}
             <li class="nav-item active">
               <a class="nav-link" href="/attendance">Mark Attendance</a>
             </li>
@@ -44,6 +44,11 @@
           {% endif %}
         </ul>
         {% if session.fty_logged_in or session.std_logged_in %}
+        {% if session.is_admin %}
+        <div class="nav-item">
+          <a class="nav-link" style="color:white" href="/admin/settings">Settings</a>
+        </div>
+        {% endif %}
         <div class="nav-item">
           <a class="nav-link" style="color:white" href="#">Welcome {{ session.uname }}</a>
         </div>

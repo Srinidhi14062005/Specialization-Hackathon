@@ -1,0 +1,63 @@
+{% extends 'layout.html' %}
+{% block body %}
+<div class="col-md-8 mx-auto">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title text-center"><i class="fas fa-cogs"></i> Administrator Settings</h4>
+        </div>
+        <div class="card-body text-center">
+            <div class="alert alert-warning border-0" style="background: rgba(255, 193, 7, 0.1); color: #ffc107;">
+                <h5 class="alert-heading"><i class="fas fa-exclamation-triangle"></i> DANGER ZONE</h5>
+                <p>Clearing student data is a permanent action. This will remove all student records, all attendance history, and all stored facial recognition images.</p>
+            </div>
+            
+            <div class="py-4">
+                <p class="mb-4">Use the button below to reset the attendance tracking system. This will not affect faculty or administrator accounts.</p>
+                
+                <!-- Confirmation Modal Trigger -->
+                <button type="button" class="btn btn-danger btn-lg shadow-sm" data-toggle="modal" data-target="#confirmDeleteModal">
+                    <i class="fas fa-trash-alt"></i> Clear All Students & Data
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content text-white" style="background: rgba(30, 30, 50, 0.95); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 15px;">
+      <div class="modal-header border-0">
+        <h5 class="modal-title" id="confirmDeleteModalLabel">Are you absolutely sure?</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        This action cannot be undone. All <strong>Student</strong> records, <strong>Attendance</strong> logs, and <strong>Profile Photos</strong> will be permanently deleted.
+      </div>
+      <div class="modal-footer border-0">
+        <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+        <form action="{{ url_for('clear_all_students') }}" method="POST">
+            <button type="submit" class="btn btn-danger">Yes, Delete Everything</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+    .btn-danger {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        border: none;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .btn-danger:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+    }
+    .modal-content {
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    }
+</style>
+{% endblock %}

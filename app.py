@@ -14,13 +14,18 @@ from video_capture import VideoCapture
 app = Flask(__name__)
 
 # Database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db/database.db'
+import os
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'db', 'database.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = '8IR4M7-R3c74GjTHhKzWODaYVHuPGqn4w92DHLqeYJA'
 
 db = SQLAlchemy(app)
 # Import models here as to avoid circular import issue
 from models import *
+
+with app.app_context():
+    db.create_all()
 
 @app.route('/')
 def index():
@@ -97,6 +102,17 @@ def is_faculty_logged_in(f):
         else:
             flash('Unauthorized, Please login!', 'danger')
             return redirect(url_for('login_faculty'))
+    return wrap
+
+
+def is_admin(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'fty_logged_in' in session and session.get('is_admin'):
+            return f(*args, **kwargs)
+        else:
+            flash('Unauthorized, Administrator access required!', 'danger')
+            return redirect(url_for('faculty'))
     return wrap
 
 
@@ -231,6 +247,37 @@ def capture_image():
     session['img_captured'] = True
 
     return redirect(url_for('register_student'))
+
+
+@app.route('/admin/settings')
+@is_admin
+def admin_settings():
+    return render_template('settings.html')
+
+
+@app.route('/admin/clear_all_students', methods=['POST'])
+@is_admin
+def clear_all_students():
+    try:
+        # 1. Clear all records from Attendance and Student tables
+        Attendance.query.delete()
+        Student.query.delete()
+        db.session.commit()
+
+        # 2. Delete all student profile pictures in static/images/users/
+        import glob
+        files = glob.glob('static/images/users/*.jpg')
+        for f in files:
+            # Don't delete temp.jpg if it exists
+            if not f.endswith('temp.jpg'):
+                os.remove(f)
+
+        flash('All student and attendance data has been cleared successfully!', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash(f'An error occurred while clearing data: {str(e)}', 'danger')
+
+    return redirect(url_for('admin_settings'))
 
 
 @app.route('/attendance', methods=['GET', 'POST'])
